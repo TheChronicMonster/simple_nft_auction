@@ -1,4 +1,4 @@
-Build dApps with Reach
+# Build dApps with Reach
 
 Alice and Bob are now ready to kick-off development of their Algorand-powered auction dApp! This guide will take you through the steps to build the dApp, which includes setting up a development environment, writing the dApp code which can contain multiple smart contracts, deploying it, and writing the functions to interact with it.
 
