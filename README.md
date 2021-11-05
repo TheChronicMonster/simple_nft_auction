@@ -205,16 +205,17 @@ export const main = Reach.App(() => {
 
 The functions in the frontend are called from the backend using the interact interface. Notice in the code below, `interact.getSale()` which returns nftID, reservePrice and lenInBlocks. The Creator of the auction publishes the auction params for NFT id, reservePrice and lenInBlocks and commits to the blockchain. The Bidder sees the params. If the entire DApp is waiting for a single participant to act, such as when at a play the entire theatre waits in anticipation for the stage hands to draw the curtains, then you either need a pay or publish. If the single participant is sharing information, then you need a publish; but if they are only paying a previously known amount, then you need a pay. This kind of transfer always explicitly names the party acting, as in:
 
-Publish Information
+## Publish Information
 
 ``` js
 Creator.publish(nftId, reservePrice, lenInBlocks);
+
+Creator.pay([[amt, nftId]]);
 ```
 
 Pay and publish without a race are for when one participant wants to do one thing. This snippet makes a pay transaction:
 
 ``` js
-Creator.pay([[amt, nftId]]);
  Creator.only(() => {
    const [ nftId, reservePrice, lenInBlocks ] = declassify(interact.getSale());
  });
@@ -225,6 +226,8 @@ Creator.pay([[amt, nftId]]);
  const end = lastConsensusTime() + lenInBlocks;
  Bidder.interact.seeParams([nftId, reservePrice, end]);
 ```
+
+## Consensus Network
 
 A Consensus Network is a Network protocol that contains network tokens (ALGO, ETH, etc.), non-network tokens (ASA, ERC-20, etc.), as well as a set of accounts and contracts. 
 Rules for the outcome of the bidding are next. The consensus transfer uses parallelReduce, which facilitates bidders repeatedly providing new bids as they compete to be the highest bidder before a time limit is reached. Additional consensus transfer patterns are discussed in the [reach documentation](https://docs.reach.sh/). 
@@ -252,6 +255,20 @@ Rules for the outcome of the bidding are next. The consensus transfer uses paral
          return [ this, bid, bid ];
        }))
 ```     
+
+## Timeouts
+
+Timeouts prevent participants from stalling transactions in their local steps. A timeout can be calulated in reference to the passage of time or the passage of blocks. When the contract times out, the Creator interacts with the timeout object in the frontend, publishes data to the participants and Reach returns the highest bidder, the last price and the current price.
+
+``` js
+      .timeout(absoluteTime(end), () => {
+        Creator.interact.timeout();
+        Creator.publish();
+        return [ highestBidder, lastPrice, currentPrice ];
+      });
+```
+
+## Transfers
 
 Maybe can be some or none: (evaluate the return of a function). The transfer is made from the Bidder to the Creator for the bid amount lastPrice on the NFT. The NFT is transferred to the highest bidder. Each can see the results with showOutcome. 
 
