@@ -20,9 +20,9 @@ Reach is designed to work on POSIX systems with [make](https://en.wikipedia.org/
 To confirm everything is installed try to run the following three commands and see no errors
 
 ``` bash
-  $ make --version
-  $ docker --version
-  $ docker-compose --version
+$ make --version
+$ docker --version
+$ docker-compose --version
 ```
 
 If you’re using Windows, consult [the guide to using Reach on Windows](https://docs.reach.sh/guide-windows.html).
@@ -51,31 +51,31 @@ cd simple_nft_auction
 Next, download Reach by running
 
 ``` bash
-  $ curl https://docs.reach.sh/reach -o reach ; chmod +x reach
+$ curl https://docs.reach.sh/reach -o reach ; chmod +x reach
 ```
 
 Confirm the download worked by running
 
 ``` bash
-  $ ./reach version
+$ ./reach version
 ```
 
 Since Reach is Dockerized, when first used, the images it uses need to be downloaded. This will happen automatically when used for the first time, but can be done manually now by running
 
 ``` bash
-  $ ./reach update
+$ ./reach update
 ```
 
 You’ll know that everything is in order if you can run
 
 ``` bash
-  $ ./reach compile --help
+$ ./reach compile --help
 ```
 
 To determine the current version is installed, run
 
 ``` bash
-  $ ./reach hashes
+$ ./reach hashes
 ```
 
 Output should look similar to:
@@ -100,7 +100,7 @@ More information: Detailed Reach install instructions can be found in the [reach
 Sometimes it may be convenient to use the reach run command, preceded by setting the REACH_CONNECTOR_MODE, especially when testing multiple blockchain deployments.
 
 ``` bash
-  REACH_CONNECTOR_MODE=ALGO-devnet ./reach run
+REACH_CONNECTOR_MODE=ALGO-devnet ./reach run
 ```
 
 Set an environment variable to use the Algorand Blockchain. 
