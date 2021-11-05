@@ -10,7 +10,7 @@ Now let’s get started.
 
 This guide is organized into two sections. The first section helps you launch the dApp and run an auction simulation. The second section provides a deeper dive into the different components of the auction application.
 
-All of the code for this guide is located here [Link to Auction](https://github.com/TheChronicMonster/reach-lang/tree/master/examples/simple-nft-auction). Download index.mjs and index.rsh and follow along!
+All of the code for this guide is located here [Link to Auction](https://github.com/TheChronicMonster/simple_nft_auction). Download _[index.mjs](https://github.com/TheChronicMonster/simple_nft_auction/blob/main/index.mjs)_ and _[index.rsh](https://github.com/TheChronicMonster/simple_nft_auction/blob/main/index.rsh)_ and follow along!
 
 ## Install Reach
 
@@ -18,11 +18,16 @@ Reach is designed to work on POSIX systems with [make](https://en.wikipedia.org/
 
 
 To confirm everything is installed try to run the following three commands and see no errors
+
+``` bash
   $ make --version
   $ docker --version
   $ docker-compose --version
+```
+
 If you’re using Windows, consult [the guide to using Reach on Windows](https://docs.reach.sh/guide-windows.html).
-Once confirmed that reach prerequisite are installed, choose a directory for this project such as:
+
+Once you've confirmed that the Reach prerequisites are installed, choose a directory for this project such as:
 
 ``` bash
   $ mkdir -p ~/reach/auction && cd ~/reach/auction
@@ -80,7 +85,7 @@ More information: Detailed Reach install instructions can be found in the [reach
 Clone the repository using the following commands.
 
 ```bash
-// TBD git clone [insert link] 
+git clone https://github.com/TheChronicMonster/simple_nft_auction.git 
 
 ```
 
@@ -89,10 +94,10 @@ Clone the repository using the following commands.
 Navigate to your project folder
 
 ``` bash
-cd  ~/reach/auction
+cd ~/reach/auction
 ```
 
-Sometimes it may be convenient to use the reach run command, preceded by setting the REACH_CONNECTOR_MODE , especially when testing multiple blockchain deployments.
+Sometimes it may be convenient to use the reach run command, preceded by setting the REACH_CONNECTOR_MODE, especially when testing multiple blockchain deployments.
 
 ``` bash
   REACH_CONNECTOR_MODE=ALGO-devnet ./reach run
@@ -116,11 +121,11 @@ Sellers can specify a reserve price, which if not met, will return the artwork t
 1. For each bid, if the new bid is higher than the previous bid, the previous bid will be refunded to the previous bidder and the new bid will be recorded and held by the contract.
 1. At the end of a successful auction, where the reserve price was met, the highest bidder will receive the artwork and the seller will receive the full bid amount.
 
-Copy these two files into your  ~/reach/auction folder.
+Copy these two files into your ~/reach/auction folder.
 
-_index.rsh_ is the Backend which provides the implementation of the solution in. It also determines what is published to the blockchain and how. It also defines the interfaces to the frontend.
+_[index.rsh](https://github.com/TheChronicMonster/simple_nft_auction/blob/main/index.rsh)_ is the Backend which provides the implementation of the solution in. It also determines what is published to the blockchain and how. It also defines the interfaces to the frontend.
 
-_index.mjs_ is the Frontend provides a User Interface including prompts and a web and/or mobile app  frontend. It creates accounts and provides the logic of `interact` methods.
+_[index.mjs](https://github.com/TheChronicMonster/simple_nft_auction/blob/main/index.mjs)_ is the Frontend provides a User Interface including prompts and a web and/or mobile app frontend. It creates accounts and provides the logic of `interact` methods.
 
 # The dApp
 
@@ -134,7 +139,7 @@ Run the auction
 $ ./reach run
 ```
 
-Output should be similar to below,  showing a winner of the auction:
+Output should be similar to below, showing a winner of the auction:
 
 ``` highlight
 Alice has 10 ALGO and 0 of the NFT
@@ -170,9 +175,9 @@ Carla has 9.999009 ALGO and 0 of the NFT
 
 ## Basic Functions of the auction
 
-The Backend, _index.rsh_, defines the interface for functions coded in the frontend. The Creator  is a Participant that has getSale, seeBid and timeout functions.  A participant is an “actor” which takes part in the application (dApp). A participant is associated with an account (address) on the consensus network. A participant can have persistently stored values, called its local state. 
+The Backend, _[index.rsh](https://github.com/TheChronicMonster/simple_nft_auction/blob/main/index.rsh)_, defines the interface for functions coded in the frontend. The Creator is a Participant that has getSale, seeBid and timeout functions. A participant is an “actor” which takes part in the application (dApp). A participant is associated with an account (address) on the consensus network. A participant can have persistently stored values, called its local state. 
 
-The Bidder is a ParticipantClass that has seeParams and getBid functions. A participant class is a category of Participant, it is like a Participant… but can occur many times in a single application. Example: an application where users vote for their favorite puppy. There can be many voters voting, but they are all voters. All voters would be a member of the “voter participant class”. In the auction dApp we have a participant class of bidders, with each bidder having the ability to place a bid.  
+The Bidder is a ParticipantClass that has seeParams and getBid functions. A participant class is a category of Participant, it is like a Participant… but can occur many times in a single application. Example: an application where users vote for their favorite puppy. There can be many voters voting, but they are all voters. All voters would be a member of the “voter participant class”. In the auction dApp we have a participant class of bidders, with each bidder having the ability to place a bid.
 
 ``` js
 'reach 0.1';
@@ -198,7 +203,7 @@ export const main = Reach.App(() => {
  deploy();
 ```
 
-The functions in the frontend are called from the backend using the interact interface. Notice in the code below, `interact.getSale()` which returns nftID, reservePrice and lenInBlocks.  The Creator of the auction publishes the auction params for NFT id,  reservePrice and lenInBlocks and commits to the blockchain. The Bidder sees the params. If the entire DApp is waiting for a single participant to act, such as when at a play the entire theatre waits in anticipation for the stage hands to draw the curtains, then you either need a pay or publish. If the single participant is sharing information, then you need a publish; but if they are only paying a previously known amount, then you need a pay. This kind of transfer always explicitly names the party acting, as in:
+The functions in the frontend are called from the backend using the interact interface. Notice in the code below, `interact.getSale()` which returns nftID, reservePrice and lenInBlocks. The Creator of the auction publishes the auction params for NFT id, reservePrice and lenInBlocks and commits to the blockchain. The Bidder sees the params. If the entire DApp is waiting for a single participant to act, such as when at a play the entire theatre waits in anticipation for the stage hands to draw the curtains, then you either need a pay or publish. If the single participant is sharing information, then you need a publish; but if they are only paying a previously known amount, then you need a pay. This kind of transfer always explicitly names the party acting, as in:
 
 Publish Information
 
@@ -249,7 +254,7 @@ Rules for the outcome of the bidding are next. The consensus transfer uses paral
        }))
 ```     
 
-Maybe can be some or none: (evaluate the return of a function)   The transfer is made from the Bidder to the Creator for the bid amount lastPrice on the NFT. The NFT is transferred to the highest bidder.  Each can see the results with showOutcome. 
+Maybe can be some or none: (evaluate the return of a function). The transfer is made from the Bidder to the Creator for the bid amount lastPrice on the NFT. The NFT is transferred to the highest bidder. Each can see the results with showOutcome. 
 
 ``` js
  transfer(lastPrice).to(Creator);
@@ -261,7 +266,7 @@ Maybe can be some or none: (evaluate the return of a function)   The transfer is
 });
 ```
 
-The Frontend, _index.mjs_, Create test accounts for Alice, Bob, and Carla with a balance of 100 algos. The Creator deploys the contract. 
+The Frontend, _[index.mjs](https://github.com/TheChronicMonster/simple_nft_auction/blob/main/index.mjs)_, Create test accounts for Alice, Bob, and Carla with a balance of 100 algos. The Creator deploys the contract. 
 
 ``` js
 import { loadStdlib } from '@reach-sh/stdlib/loader.mjs';
@@ -286,7 +291,7 @@ const names = ["Creator", "Alice", "Bob", "Carla"];
  const ctcCreator = accCreator.contract(backend);
 ```
 
-Provide the  logic for the `interact` methods. Interact methods are called from the backend for the frontend to execute. Functions in _index.mjs_ include: showBalance, getSale, seeBid, timeout, showOutcome and showBalance. 
+Provide the logic for the `interact` methods. Interact methods are called from the backend for the frontend to execute. Functions in _[index.mjs](https://github.com/TheChronicMonster/simple_nft_auction/blob/main/index.mjs)_ include: showBalance, getSale, seeBid, timeout, showOutcome and showBalance. 
 
 ``` js
  const showBalance = async (acc, i) => {
