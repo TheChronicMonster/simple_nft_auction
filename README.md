@@ -30,7 +30,22 @@ If you’re using Windows, consult [the guide to using Reach on Windows](https:/
 Once you've confirmed that the Reach prerequisites are installed, choose a directory for this project such as:
 
 ``` bash
-  $ mkdir -p ~/reach/auction && cd ~/reach/auction
+$ mkdir -p ~/reach && cd ~/reach
+```
+
+## Clone the Reach Auction demo application
+
+Clone the repository using the following commands.
+
+```bash
+git clone https://github.com/TheChronicMonster/simple_nft_auction.git 
+
+```
+
+Navigate to the project folder
+
+``` bash
+cd simple_nft_auction
 ```
 
 Next, download Reach by running
@@ -78,24 +93,9 @@ devnet-eth: fb449c94
 
 All of the hashes listed should be the same and then visit the #releases channel on the [Reach Discord Server](https://discord.gg/9kbHPfwbwn) to see the current hashes.
 
-More information: Detailed Reach install instructions can be found in the [reach docs](https://reach.sh/). 
-
-## Clone the Reach Auction demo application
-
-Clone the repository using the following commands.
-
-```bash
-git clone https://github.com/TheChronicMonster/simple_nft_auction.git 
-
-```
+More information: Detailed Reach install instructions can be found in the [reach docs](https://docs.reach.sh/). 
 
 ## Setup environments and run tests
-
-Navigate to your project folder
-
-``` bash
-cd ~/reach/auction
-```
 
 Sometimes it may be convenient to use the reach run command, preceded by setting the REACH_CONNECTOR_MODE, especially when testing multiple blockchain deployments.
 
@@ -109,7 +109,7 @@ Set an environment variable to use the Algorand Blockchain.
 export REACH_CONNECTOR_MODE="ALGO-devnet"
 ```
 
-# Application OverView
+# Application Overview
 
 Alice and Bob’s auction design
 
@@ -117,11 +117,11 @@ The sample app shown below is an auction. Alice and Bob think through the featur
 
 1. Sellers must be able to create a new auction for each piece of artwork. The artwork must be held by the contract after the auction begins and until the auction closes.
 1. The auction can be closed before it begins, in which case the artwork will be returned to the seller.
-Sellers can specify a reserve price, which if not met, will return the artwork to them.
+1. Sellers can specify a reserve price, which if not met, will return the artwork to them.
 1. For each bid, if the new bid is higher than the previous bid, the previous bid will be refunded to the previous bidder and the new bid will be recorded and held by the contract.
 1. At the end of a successful auction, where the reserve price was met, the highest bidder will receive the artwork and the seller will receive the full bid amount.
 
-Copy these two files into your ~/reach/auction folder.
+## The front and backend files that compose the Reach dApp.
 
 _[index.rsh](https://github.com/TheChronicMonster/simple_nft_auction/blob/main/index.rsh)_ is the Backend which provides the implementation of the solution in. It also determines what is published to the blockchain and how. It also defines the interfaces to the frontend.
 
@@ -211,8 +211,7 @@ Publish Information
 Creator.publish(nftId, reservePrice, lenInBlocks);
 ```
 
-Pay and publish without a race are for when one participant wants to do one thing.
-Make a pay transaction
+Pay and publish without a race are for when one participant wants to do one thing. This snippet makes a pay transaction:
 
 ``` js
 Creator.pay([[amt, nftId]]);
@@ -364,7 +363,7 @@ The bidders attach (opt in) to the contract that the Creator deployed. Console m
 
 ## Verification
 
-Verification is a key feature to Reach. It is facilitated by the use of assert statements. For more details on verification, auditing, mathematical proofs, cryptographic commitment schemes and timeouts see the Reach [documentation](https://docs.reach.sh/guide-assert.html). [For the technical among us, dig deeper into verification with loop invariants](https://docs.reach.sh/guide-loop-invs.html).
+Verification is a key feature to Reach. It is facilitated by the use of assert statements. For more details on verification, auditing, mathematical proofs, cryptographic commitment schemes and timeouts see the Reach [documentation](https://docs.reach.sh/guide-assert.html). For the technical among us, dig deeper into verification with [loop invariants](https://docs.reach.sh/guide-loop-invs.html).
  
 ## Remote Procedure Calls (RPC)
 
@@ -374,4 +373,4 @@ The Reach RPC Server provides access to compiled JavaScript backends via an HTTP
 
 Reach builds distributed Apps (dApps) and deploys the entire Application, not just the smart contract. This completes the guide to launch Alice’s auction dApp on Algorand. In summary, this document provides how to set up the development environment, create a sample dApp and deploy it to the blockchain. Reach has backend and frontend components and has the ability to verify the dApp. Now that you know the fundamentals. You can jump further and get details of [smart contract development using Reach](https://docs.reach.sh/guide-solidity.html) which provides Remote Procedure Call (RPC) Frontend in Python, Go and JavaScript as well as deploying to Algorand TestNet and MainNet.
 
-Complete code for this auction simulation can be found [here](). 
+Complete code for this auction simulation can be found [here](https://github.com/reach-sh/reach-lang/tree/master/examples/simple-nft-auction). 
